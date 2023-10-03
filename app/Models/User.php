@@ -5,7 +5,10 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use WendellAdriel\Lift\Lift;
 use Laravel\Sanctum\HasApiTokens;
+use WendellAdriel\Lift\Attributes\Cast;
 use Illuminate\Notifications\Notifiable;
+use WendellAdriel\Lift\Attributes\Hidden;
+use WendellAdriel\Lift\Attributes\Fillable;
 use WendellAdriel\Lift\Attributes\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,35 +18,21 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Lift;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    #[Fillable]
+    public string $name;
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    #[Fillable]
+    public string $email;
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    #[Hidden]
+    #[Fillable]
+    #[Cast('hashed')]
+    public string $password;
+
+    #[Cast('datetime')]
+    public $email_verified_at;
+
+    #[Hidden]
+    public $remember_token;
 
 }
